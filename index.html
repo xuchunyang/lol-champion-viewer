@@ -224,7 +224,7 @@
             const spell = spells[idx];
             elem.querySelector("img").src = spell.imgSrc;
             elem.querySelector(".name").textContent = spell.name;
-            elem.querySelector(".description").textContent = spell.description;
+            elem.querySelector(".description").textContent = stripHtml(spell.description);
           });
         }
       }
@@ -282,6 +282,13 @@
             new Champion(j.data[champion]).updateView();
             progress.textContent = "";
           });
+      }
+
+      // https://stackoverflow.com/a/822486/2999892
+      function stripHtml(html) {
+        const tmp = document.createElement("div");
+        tmp.innerHTML = html;
+        return tmp.textContent;
       }
     </script>
   </body>
