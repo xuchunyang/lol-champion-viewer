@@ -253,7 +253,7 @@
 
         const champion = localStorage.getItem("champion");
         if (champion) {
-          const found = Array.from(championSelect.querySelectorAll("option")).find(o => o.value === lang);
+          const found = Array.from(championSelect.querySelectorAll("option")).find(o => o.value === champion);
           if (found) {
             found.selected = true;
           } else {
