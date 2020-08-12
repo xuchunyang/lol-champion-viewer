@@ -79,7 +79,7 @@
     <form>
       <label for="lang-select">Language:</label>
       <select id="lang-select" name="lang"></select>
-      <label for="champion-select">Champion:</label>        
+      <label for="champion-select">Champion:</label>
       <select id="champion-select" name="champion"></select>
       <button>View</button>
     </form>
@@ -229,14 +229,44 @@
       const form = document.querySelector("form");
       const progress = document.querySelector(".progress");
       form.onsubmit = onsubmit;
+      loadData();
       onsubmit();
+
+      function saveData(language, champion) {
+        if (language) localStorage.setItem("language", language);
+        if (champion) localStorage.setItem("champion", champion);
+      }
+
+      function loadData() {
+        const lang = localStorage.getItem("language");
+        if (lang) {
+          const found = Array.from(langSelect.querySelectorAll("option")).find(o => o.value === lang);
+          if (found) {
+            found.selected = true;
+          } else {
+            console.error(`Invalid language: ${lang}`);
+          }
+        }
+
+        const champion = localStorage.getItem("champion");
+        if (champion) {
+          const found = Array.from(langSelect.querySelectorAll("option")).find(o => o.value === lang);
+          if (found) {
+            found.selected = true;
+          } else {
+            console.error(`Invalid champion: ${champion}`);
+          }
+        }
+      }
 
       function onsubmit(e) {
         if (e) e.preventDefault();
 
+
         const fd = new FormData(form);
         const lang = fd.get("lang");
         const champion = fd.get("champion");
+        saveData(lang, champion);
         console.log(lang, champion);
         const url = `https://ddragon.leagueoflegends.com/cdn/${PATCH_VERSION}/data/${lang}/champion/${champion}.json`;
         progress.textContent = `Fetching ${url}...`;
