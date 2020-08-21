@@ -10,6 +10,7 @@
         line-height: 1.5;
         max-width: 900px;
         margin: 0 auto;
+        position: relative;
       }
 
       h1 {
@@ -75,10 +76,20 @@
       .card {
         margin-bottom: 5px;
       }
+
+      #patch {
+        position: absolute;
+        right: 5px;
+        top: 0;
+        color: #333;
+        font-weight: 300;
+        font-size: 75%;
+      }
     </style>
   </head>
   <body>
     <h1>LoL Champion Viewer</h1>
+    <p id="patch"></p>
     <form>
       <label for="lang-select">Language:</label>
       <select id="lang-select" name="lang"></select>
@@ -189,7 +200,9 @@
         selectElement.appendChild(option);
       }
 
+      // https://ddragon.leagueoflegends.com/api/versions.json
       const PATCH_VERSION = "10.16.1";
+      document.querySelector("#patch").textContent = `Patch: ${PATCH_VERSION}`;
 
       const main = document.querySelector("main");
       const template = document.querySelector("template");
