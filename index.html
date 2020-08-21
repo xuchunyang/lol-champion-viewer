@@ -87,6 +87,8 @@
       <button>View</button>
     </form>
     <p class="progress"></p>
+    <main></main>
+    <template>
     <article>
       <h1>九尾妖狐, 阿狸</h1>
       <div class="card">
@@ -148,6 +150,7 @@
       </section>
       </div>
     </article>
+    </template>
     <script>
       // https://ddragon.leagueoflegends.com/cdn/languages.json with "id_ID" removed
       const languages = ["en_US","cs_CZ","de_DE","el_GR","en_AU","en_GB","en_PH","en_SG","es_AR","es_ES",
@@ -188,7 +191,8 @@
 
       const PATCH_VERSION = "10.16.1";
 
-      const article = document.querySelector("article");
+      const main = document.querySelector("main");
+      const template = document.querySelector("template");
       class Champion {
         // data is from
         // https://ddragon.leagueoflegends.com/cdn/10.16.1/data/zh_CN/champion/Ahri.json
@@ -199,8 +203,12 @@
         }
 
         updateView() {
+          main.innerHTML = "";
           // XXX not work (invalid invocation), why?
           // const $ = article.querySelector;
+          const clone = template.content.cloneNode(true);
+          const article = clone.querySelector("article");
+          main.appendChild(article);
           article.querySelector("h1").textContent = `${this.name}, ${this.title}`;
           article.querySelector("img").src = `https://ddragon.leagueoflegends.com/cdn/${PATCH_VERSION}/img/champion/${this.image.full}`;
           article.querySelector("img").alt = this.name;
