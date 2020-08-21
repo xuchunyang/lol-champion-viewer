@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>LoL Champion Viewer</title>
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/flickity-fullscreen@1/fullscreen.css">
+    <script src="https://unpkg.com/flickity-fullscreen@1/fullscreen.js" defer></script>    
     <style>
       body {
         font-family: system-ui, sans-serif;
@@ -11,6 +15,7 @@
         max-width: 900px;
         margin: 0 auto;
         position: relative;
+        padding-bottom: 1em;
       }
 
       h1 {
@@ -96,6 +101,20 @@
         font-weight: 300;
         font-size: 75%;
       }
+
+      .main-carousel {
+        margin-bottom: calc(25px + 1em);
+      }
+
+      .carousel-cell {
+        max-width: 1215px;
+        width: 100%;
+        margin-right: 10px;
+      }
+
+      .carousel-cell-image {
+        max-width: 100%;
+      }
     </style>
   </head>
   <body>
@@ -110,7 +129,7 @@
     </form>
     <p class="progress"></p>
     <main></main>
-    <template>
+    <template id="article-template">
     <article>
       <h1>九尾妖狐, 阿狸</h1>
       <div class="card">
@@ -173,7 +192,20 @@
           <p class="description">阿狸向前猛冲，并放出元气弹，对周围的数个敌人造成伤害。灵魄突袭在进入冷却阶段以前最多可被施放三次。</p>
         </div>
       </section>
+
+      <div class="main-carousel">
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_1.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_2.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_3.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_7.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_8.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_9.jpg"></div>
+      </div>
     </article>
+    </template>
+    <template id="carousel-cell-template">
+      <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg"></div>
     </template>
     <script>
       // https://ddragon.leagueoflegends.com/cdn/languages.json with "id_ID" removed
@@ -218,7 +250,8 @@
       document.querySelector("#patch").textContent = `Patch: ${PATCH_VERSION}`;
 
       const main = document.querySelector("main");
-      const template = document.querySelector("template");
+      const articleTemplate = document.querySelector("#article-template");
+      const carouselCellTemplate = document.querySelector("#carousel-cell-template");
       class Champion {
         // data is from
         // https://ddragon.leagueoflegends.com/cdn/10.16.1/data/zh_CN/champion/Ahri.json
@@ -232,7 +265,7 @@
           main.innerHTML = "";
           // XXX not work (invalid invocation), why?
           // const $ = article.querySelector;
-          const clone = template.content.cloneNode(true);
+          const clone = articleTemplate.content.cloneNode(true);
           const article = clone.querySelector("article");
           main.appendChild(article);
           article.querySelector("h1").textContent = `${this.name}, ${this.title}`;
@@ -259,6 +292,25 @@
             elem.querySelector("img").src = spell.imgSrc;
             elem.querySelector(".name").textContent = spell.name;
             elem.querySelector(".description").textContent = stripHtml(spell.description);
+          });
+
+          const carousel = article.querySelector(".main-carousel");
+          carousel.innerHTML = "";
+          this.skins.forEach(({num}) => {
+            const clone = carouselCellTemplate.content.cloneNode(true);
+            const cell = clone.querySelector(".carousel-cell");
+            const img = cell.querySelector("img");
+            img.setAttribute(
+              "data-flickity-lazyload",
+              `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.id}_${num}.jpg`
+            );
+            img.alt = `${this.id}'s #${num} skin`;
+            carousel.appendChild(cell);
+          });
+          new Flickity(carousel, {
+            lazyLoad: 2,
+            wrapAround: true,
+            fullscreen: true,
           });
         }
       }
