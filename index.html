@@ -296,7 +296,7 @@
 
           const carousel = article.querySelector(".main-carousel");
           carousel.innerHTML = "";
-          this.skins.forEach(({num}) => {
+          this.skins.forEach(({num, name}) => {
             const clone = carouselCellTemplate.content.cloneNode(true);
             const cell = clone.querySelector(".carousel-cell");
             const img = cell.querySelector("img");
@@ -304,7 +304,7 @@
               "data-flickity-lazyload",
               `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.id}_${num}.jpg`
             );
-            img.alt = `${this.id}'s #${num} skin`;
+            img.alt = name;
             carousel.appendChild(cell);
           });
           new Flickity(carousel, {
