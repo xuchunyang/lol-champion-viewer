@@ -18,6 +18,7 @@ jobs:
       - id: changed
         name: Check if index.html is really changed
         run: git diff --exit-code index.html
+        continue-on-error: true
 
       - name: Commit changes
         if: steps.changed.conclusion == 'failure'
