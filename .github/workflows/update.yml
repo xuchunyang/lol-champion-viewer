@@ -13,11 +13,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Possibly update version
-        uses: "./update-latest-version"
+        run: ./update-latest-version
 
       - id: changed
         name: Check if index.html is really changed
-        uses: "git diff --exit-code index.html"
+        run: git diff --exit-code index.html
 
       - name: Commit changes
         if: steps.changed.conclusion == 'failure'
@@ -29,4 +29,3 @@ jobs:
           add: index.html
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
