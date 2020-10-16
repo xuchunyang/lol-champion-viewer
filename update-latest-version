@@ -1,0 +1,8 @@
+#!/bin/sh
+
+LATEST=$( ./print-latest-version )
+
+SED=sed
+>/dev/null command -v gsed && SED=gsed
+
+$SED -i -e "s/const PATCH_VERSION.*/const PATCH_VERSION = \"$LATEST\";/" index.html
