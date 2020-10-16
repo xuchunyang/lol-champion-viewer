@@ -17,11 +17,10 @@ jobs:
 
       - id: changed
         name: Check if index.html is really changed
-        run: git diff --exit-code index.html
+        run: "! git diff --exit-code index.html"
         continue-on-error: true
 
       - name: Commit changes
-        if: steps.changed.conclusion == 'failure'
         uses: EndBug/add-and-commit@v4.4.0
         with:
           author_name: Xu Chunyang
