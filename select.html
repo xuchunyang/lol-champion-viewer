@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Champion Select</title>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+
+      .gallery-item {
+        margin: 5px;
+        width: 112px;
+        height: 112px;
+        overflow: hidden;
+      }
+
+      .gallery-item-selected {
+        outline: 3px solid blue;
+        box-shadow: 0px 0px 10px #000;
+      }
+
+      .gallery-img {
+        transform: scale(1.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gallery">
+    </div>
+
+    <template id="gallery-item-template">
+      <div class="gallery-item">
+        <img class="gallery-img" src="https://ddragon.leagueoflegends.com/cdn/10.16.1/img/champion/Caitlyn.png" alt="Caitlyn">
+      </div>
+    </template>
+
+    <script>
+      const galleryItemTemplate = document.querySelector("#gallery-item-template");
+      const gallery = document.querySelector(".gallery");
+      const PATCH = "10.19.1";
+
+      // Extracted from https://ddragon.leagueoflegends.com/cdn/10.16.1/data/en_US/champion.json
+      const champions = ["Aatrox","Ahri","Akali","Alistar","Amumu","Anivia","Annie","Aphelios","Ashe","AurelionSol","Azir",
+                         "Bard","Blitzcrank","Brand","Braum",
+                         "Caitlyn","Camille","Cassiopeia","Chogath","Corki",
+                         "Darius","Diana","Draven","DrMundo",
+                         "Ekko","Elise","Evelynn","Ezreal",
+                         "Fiddlesticks","Fiora","Fizz",
+                         "Galio","Gangplank","Garen","Gnar","Gragas","Graves",
+                         "Hecarim","Heimerdinger","Illaoi","Irelia","Ivern",
+                         "Janna","JarvanIV","Jax","Jayce","Jhin","Jinx",
+                         "Kaisa","Kalista","Karma","Karthus","Kassadin","Katarina","Kayle","Kayn","Kennen","Khazix","Kindred",
+                         "Kled","KogMaw","Leblanc","LeeSin","Leona","Lillia","Lissandra","Lucian","Lulu","Lux","Malphite",
+                         "Malzahar","Maokai","MasterYi","MissFortune","MonkeyKing","Mordekaiser","Morgana","Nami","Nasus",
+                         "Nautilus","Neeko","Nidalee","Nocturne","Nunu","Olaf","Orianna","Ornn","Pantheon","Poppy","Pyke",
+                         "Qiyana","Quinn","Rakan","Rammus","RekSai","Renekton","Rengar","Riven","Rumble","Ryze","Samira","Sejuani",
+                         "Senna","Sett","Shaco","Shen","Shyvana","Singed","Sion","Sivir","Skarner","Sona","Soraka","Swain",
+                         "Sylas","Syndra","TahmKench","Taliyah","Talon","Taric","Teemo","Thresh","Tristana","Trundle",
+                         "Tryndamere","TwistedFate","Twitch","Udyr","Urgot","Varus","Vayne","Veigar","Velkoz","Vi","Viktor",
+                         "Vladimir","Volibear","Warwick","Xayah","Xerath","XinZhao","Yasuo","Yone","Yorick","Yuumi","Zac",
+                         "Zed","Ziggs","Zilean","Zoe","Zyra"];
+
+      let selectedIndex = 0;
+      champions.forEach((id, idx) => {
+        const clone = galleryItemTemplate.content.cloneNode(true);
+        const galleryItem = clone.querySelector(".gallery-item");
+        const img = galleryItem.querySelector("img");
+        img.src = `https://ddragon.leagueoflegends.com/cdn/${PATCH}/img/champion/${id}.png`;
+        img.alt = id;
+        gallery.appendChild(galleryItem);
+        if (idx === selectedIndex) {
+          galleryItem.classList.add("gallery-item-selected");
+        }
+      });
+
+      const items = [...gallery.querySelectorAll(".gallery-item")];
+      function getImgsPerLine() {
+        let imgsPerLine = 1;
+        const initialTop = items[0].getBoundingClientRect().top;
+        for (let i = 1; i < items.length; i++) {
+          if (items[i].getBoundingClientRect().top !== initialTop) {
+            break;
+          }
+          imgsPerLine++;
+        }
+        return imgsPerLine;
+      }
+
+      document.onkeydown = e => {
+        e.stopPropagation();
+        const oldIndex = selectedIndex;
+        switch (e.key) {
+        case "ArrowDown":
+        case "s":
+          selectedIndex += getImgsPerLine();
+          break;
+        case "ArrowUp":
+        case "w":
+          selectedIndex -= getImgsPerLine();
+          break;
+        case "ArrowLeft":
+        case "a":
+          selectedIndex--;
+          break;
+        case "ArrowRight":
+        case "d":
+          selectedIndex++;
+          break;
+        default:
+          return;
+        }
+        if (selectedIndex < 0) selectedIndex = 0;
+        if (selectedIndex >= items.length) selectedIndex = items.length - 1;
+        if (oldIndex != selectedIndex) {
+          items[oldIndex].classList.remove("gallery-item-selected");
+          items[selectedIndex].classList.add("gallery-item-selected");
+          items[selectedIndex].scrollIntoView({ block: "nearest" });
+        }
+      };
+    </script>
+  </body>
+</html>
