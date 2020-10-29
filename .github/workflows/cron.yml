@@ -1,7 +1,6 @@
 name: 每日检查 LOL 最新版本并及时更新
 
 on:
-  push:
   schedule:
     - cron: "0 0 * * *"
 
@@ -10,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: "14"
       - run: npm install
       - run: npm run build
 
-      - name: Check if index.html is really changed
+      - name: Check if src/data.json is really changed
         run: |
           git diff --exit-code src/data.json || echo "::set-env name=CHANGED::yes"
 
@@ -32,7 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy
-        # if: env.CHANGED == 'yes'
+        if: env.CHANGED == 'yes'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
