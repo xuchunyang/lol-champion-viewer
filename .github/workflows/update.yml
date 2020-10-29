@@ -9,23 +9,31 @@ jobs:
   update_version:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install
+      - run: npm run build
 
-      - name: Possibly update version
-        run: ./update-latest-version
-
-      - id: changed
-        name: Check if index.html is really changed
-        run: "! git diff --exit-code index.html"
-        continue-on-error: true
+      - name: Check if index.html is really changed
+        run: |
+          git diff --exit-code src/data.json || echo "::set-env name=CHANGED::yes"
 
       - name: Commit changes
+        if: env.CHANGED == 'yes'
         uses: EndBug/add-and-commit@v4.4.0
         with:
           author_name: Xu Chunyang
           author_email: xuchunyang56@gmail.com
           message: Update lol version to latest
-          add: index.html
+          add: src/data.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy
+        # if: env.CHANGED == 'yes'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist

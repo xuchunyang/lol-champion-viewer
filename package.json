@@ -1,0 +1,25 @@
+{
+  "name": "lol-champion-viewer",
+  "version": "1.0.0",
+  "description": "https://xuchunyang.github.io/lol-champion-viewer/",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node src/build-data.json.js && webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuchunyang/lol-champion-viewer.git"
+  },
+  "author": "Xu Chunyang",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/xuchunyang/lol-champion-viewer/issues"
+  },
+  "homepage": "https://github.com/xuchunyang/lol-champion-viewer#readme",
+  "devDependencies": {
+    "axios": "^0.21.0",
+    "webpack": "^5.3.1",
+    "webpack-cli": "^4.1.0"
+  }
+}

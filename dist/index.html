@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LoL Champion Viewer</title>
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/flickity-fullscreen@1/fullscreen.css">
+    <script src="https://unpkg.com/flickity-fullscreen@1/fullscreen.js" defer></script>    
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+        max-width: 900px;
+        margin: 0 auto;
+        position: relative;
+        padding-bottom: 1em;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 1.75rem;
+      }
+
+      body > h1:first-child {
+        margin-top: 0;
+      }
+
+      form {
+        text-align: center;
+      }
+
+      select {
+        margin-right: 1em;
+      }
+
+      .spell {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #888;
+        margin-bottom: 1em;
+      }
+
+      .spell * {
+        margin: 0;
+      }
+
+      .spell .kind {
+        font-size: 0.9rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #333;
+      }
+
+      .spell .name {
+        text-transform: uppercase;
+      }
+
+      .left {
+        margin-right: 1em;
+      }
+
+      .left img {
+        /* Yone's is large */
+        width: 64px;
+        height: 64px;
+        display: block;
+      }
+
+      article > h1 {
+        font-size: 1.5rem;
+        margin: 0.2em;
+      }
+
+      article {
+        margin: 0 6px;
+      }
+
+      .card {
+        margin-bottom: 5px;
+      }
+
+      .card .img {
+        width: 112px;
+        height: 112px;
+        overflow: hidden;
+        box-shadow: 0 0 7px 0px #000;
+        margin: 0 auto;
+      }
+
+      .card .img img {
+        transform: scale(1.1);
+      }
+
+      #patch {
+        position: absolute;
+        right: 5px;
+        top: 0;
+        color: #333;
+        font-weight: 300;
+        font-size: 75%;
+      }
+
+      .main-carousel {
+        margin-bottom: calc(25px + 1em);
+      }
+
+      .carousel-cell {
+        max-width: 1215px;
+        width: 100%;
+        margin-right: 10px;
+      }
+
+      .carousel-cell-image {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LoL Champion Viewer</h1>
+    <p id="patch"></p>
+    <form>
+      <label for="lang-select">Language:</label>
+      <select id="lang-select" name="lang"></select>
+      <label for="champion-select">Champion:</label>
+      <select id="champion-select" name="champion"></select>
+      <button>View</button>
+    </form>
+    <p class="progress"></p>
+    <main></main>
+    <template id="article-template">
+    <article>
+      <h1>九尾妖狐, 阿狸</h1>
+      <div class="card">
+        <div class="img">
+          <img src="https://ddragon.leagueoflegends.com/cdn/10.16.1/img/champion/Ahri.png" alt="Ahri">
+        </div>
+      </div>
+
+      <section class="spell">
+        <div class="left">
+          <img src="https://ddragon.leagueoflegends.com/cdn/10.16.1/img/passive/Ahri_SoulEater2.png">
+        </div>
+        <div class="right">
+          <p class="kind">Passive</p>
+          <h3 class="name">瓦斯塔亚的优雅</h3>
+          <p class="description">每当阿狸在短时间内对一个英雄造成了2次技能命中，她就会暂时获得移动速度加成。</p>
+        </div>
+      </section>
+
+      <section class="spell">
+        <div class="left">
+          <img src="https://ddragon.leagueoflegends.com/cdn/10.16.1/img/spell/AhriOrbofDeception.png">
+        </div>
+        <div>
+          <p class="kind">Q</p>
+          <h3 class="name">欺诈宝珠</h3>
+          <p class="description">阿狸放出并收回她的宝珠，在放出时会沿途对敌人造成魔法伤害，在收回时则会沿途对敌人造成真实伤害。在宝珠造成若干次命中后，阿狸的下一个宝珠在命中时将回复她的生命值。</p>
+        </div>
+      </section>
+
+      <section class="spell">
+        <div class="left">
+          <img src="https://ddragon.leagueoflegends.com/cdn/10.16.1/img/spell/AhriFoxFire.png">
+        </div>
+        <div>
+          <p class="kind">W</p>
+          <h3 class="name">妖异狐火</h3>
+          <p class="description">阿狸放出三团狐火。短暂的延迟后，它们会锁定附近的三名敌人进行攻击。</p>
+        </div>
+      </section>
+
+      <section class="spell">
+        <div class="left">
+          <img src="https://ddragon.leagueoflegends.com/cdn/10.16.1/img/spell/AhriSeduce.png">
+        </div>
+        <div>
+          <p class="kind">E</p>
+          <h3 class="name">魅惑妖术</h3>
+          <p class="description">阿狸献出红唇热吻，对命中的第一个敌人造成伤害并将目标魅惑，并且立刻终止目标的移动技能并使目标无恶意地走向她。目标所受的来自阿狸的伤害会暂时提升。</p>
+        </div>
+      </section>
+
+      <section class="spell">
+        <div class="left">
+          <img src="https://ddragon.leagueoflegends.com/cdn/10.16.1/img/spell/AhriTumble.png">
+        </div>
+        <div>
+          <p class="kind">R</p>
+          <h3 class="name">灵魄突袭</h3>
+          <p class="description">阿狸向前猛冲，并放出元气弹，对周围的数个敌人造成伤害。灵魄突袭在进入冷却阶段以前最多可被施放三次。</p>
+        </div>
+      </section>
+
+      <div class="main-carousel">
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_1.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_2.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_3.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_7.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_8.jpg"></div>
+        <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_9.jpg"></div>
+      </div>
+    </article>
+    </template>
+    <template id="carousel-cell-template">
+      <div class="carousel-cell"><img class="carousel-cell-image" data-flickity-lazyload="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg"></div>
+    </template>
+    <script src="index-bundle.js"></script>
+  </body>
+</html>
