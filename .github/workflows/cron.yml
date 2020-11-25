@@ -3,6 +3,7 @@ name: 每日检查 LOL 最新版本并及时更新
 on:
   schedule:
     - cron: "0 0 * * *"
+  push:
 
 jobs:
   update_version:
