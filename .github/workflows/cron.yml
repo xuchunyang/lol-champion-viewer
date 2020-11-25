@@ -17,10 +17,13 @@ jobs:
 
       - name: Check if src/data.json is really changed
         run: |
-          git diff --exit-code src/data.json || echo "::set-env name=CHANGED::yes"
+          git diff --exit-code src/data.json || echo CHANGED=yes >> $GITHUB_ENV
+
+      - name: check $CHANGED
+        run: echo "CHANGED =" $CHANGED "."
 
       - name: Commit changes
-        if: env.CHANGED == 'yes'
+        if: $CHANGED == 'yes'
         uses: EndBug/add-and-commit@v4.4.0
         with:
           author_name: Xu Chunyang
@@ -31,7 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy
-        if: env.CHANGED == 'yes'
+        if: $CHANGED == 'yes'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
