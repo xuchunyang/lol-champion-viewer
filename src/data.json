@@ -1,5 +1,5 @@
 {
-  "version": "11.14.1",
+  "version": "11.15.1",
   "languages": [
     "en_US",
     "cs_CZ",
@@ -33,6 +33,7 @@
     "Aatrox",
     "Ahri",
     "Akali",
+    "Akshan",
     "Alistar",
     "Amumu",
     "Anivia",
