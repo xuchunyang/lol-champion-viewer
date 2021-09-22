@@ -1,5 +1,5 @@
 {
-  "version": "11.18.1",
+  "version": "11.19.1",
   "languages": [
     "en_US",
     "cs_CZ",
@@ -167,6 +167,7 @@
     "Vayne",
     "Veigar",
     "Velkoz",
+    "Vex",
     "Vi",
     "Viego",
     "Viktor",
