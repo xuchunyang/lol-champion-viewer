@@ -1,5 +1,5 @@
 {
-  "version": "14.13.1",
+  "version": "14.14.1",
   "languages": [
     "en_US",
     "cs_CZ",
@@ -40,6 +40,7 @@
     "Aphelios",
     "Ashe",
     "AurelionSol",
+    "Aurora",
     "Azir",
     "Bard",
     "Belveth",
