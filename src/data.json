@@ -1,5 +1,5 @@
 {
-  "version": "15.6.1",
+  "version": "15.7.1",
   "languages": [
     "ar_AE",
     "en_US",
@@ -15,6 +15,7 @@
     "es_MX",
     "fr_FR",
     "hu_HU",
+    "id_ID",
     "it_IT",
     "ja_JP",
     "ko_KR",
